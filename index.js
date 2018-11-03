@@ -18,6 +18,15 @@ const options = cmdlineArgs([
         name: 'animation', alias: 'a',
     },
     {
+        name: 'bus', alias: 'b', type: Number
+    },
+    {
+        name: 'address', alias: 's', type: Number
+    },
+    {
+        name: 'params', alias: 'p',
+    },
+    {
         name: 'colors', alias: 'c'
     },
     {
@@ -26,15 +35,18 @@ const options = cmdlineArgs([
     {
         name: 'debug', alias: 'd', type: Boolean
     },
+    {
+        name: 'reset', alias: 'x', type: Boolean
+    },
 ]);
 
 
 const run = async () => {
     let cmd = new Commander();
-    let controller = cmd.scanForController();
+    let controller = cmd.scanForController(options['bus'], options['address']);
 
     // Initialize with 3 fans
-    await controller.initialize(options['fan-count'], options['debug']);
+    await controller.initialize(options['fan-count'], options['debug'], options['reset']);
 
     let sigIntCnt = 0;
 
@@ -101,7 +113,7 @@ const run = async () => {
             return process.exit(1);
         }
 
-        animations[options.animation](controller.devices)
+        animations[options.animation](controller.devices, options['params'])
     }
 
     if (options.framerate) {

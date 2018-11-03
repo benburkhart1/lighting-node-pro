@@ -35,13 +35,27 @@ node index.js --fan-count=3 --colors red
 
 node index.js --fan-count=3 --colors red,white,blue
 
-#### Color wheel animation
 
-node index.js --fan-count=3 --animation ColorWheel
+#### Tracer Animation
+
+colors are two colors to use for ring and rotating LED
+
+node index.js --fan-count=3 --animation Tracer -p "colors=blue,black"
+
 
 #### I want it to go faster! (-r is framerate)
 
-node index.js --fan-count=3 --animation ColorWheel -r 3
+This uses -r for frame rate of 10 per second
+
+node index.js --fan-count=3 --animation Tracer -p "colors=red,white" -r 10
+
+
+### I want different frame rates for all the different fans
+
+Ok I think that's a bit much to ask, but here it is.
+
+node index.js --fan-count=3 --animation Tracer -p "colors=red,black&fps=16,32,48"
+
 
 ### Silly 3 fan animation example
 
@@ -50,8 +64,13 @@ node index.js --fan-count=3 --animation RedBlueCollision
 
 
 If anything ever freezes, just control+c, if it still is frozen, hitting it again will force exit, should work fine the
-next run.
+next run. You can use the -x flag to force a USB reset.
 
+
+-d flag prints the bytes as they're sent down the USB bus.
+
+
+-s <address> -b <bus> allows you to specify which device if you have multiple.
 
 
 ## Concepts specific to this implementation
@@ -100,6 +119,12 @@ Sent at start when getting into the set color mode
 
 {ff}{ff}{ff}{ff}{ff}{ff}{ff}{ff}{ff}{ff}{ff}{ff}{ff}{ff}{ff}{ff}
 
+
+
+This is for the first 3 fans, If there's 4 fans, only 2 bytes of the 4th fan is done on the first request, after doing
+all color channels, it does an extension run, that looks like:
+
+{32}{00}{32}{2e} 14 bytes remaining for 4th fan, 16 bytes for 5th fan, 16 bytes for 6th fan.
 
 
 Why 16 bytes? There's 16 different LEDs. 4 on the inside, and 12 on the outside. Since there's 12, I find it easiest
