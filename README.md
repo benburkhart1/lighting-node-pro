@@ -29,38 +29,46 @@ haven't dug too deeply as I only have these ones.
 
 #### Sets all 3 fans to be red
 
+```shell
 node index.js --fan-count=3 --colors red
+````
 
 #### Sets fans to red, white and blue
 
+```shell
 node index.js --fan-count=3 --colors red,white,blue
+````
 
 
 #### Tracer Animation
 
 colors are two colors to use for ring and rotating LED
 
+```shell
 node index.js --fan-count=3 --animation Tracer -p "colors=blue,black"
-
+```
 
 #### I want it to go faster! (-r is framerate)
 
 This uses -r for frame rate of 10 per second
 
+```shell
 node index.js --fan-count=3 --animation Tracer -p "colors=red,white" -r 10
+```
 
-
-### I want different frame rates for all the different fans
+#### I want different frame rates for all the different fans
 
 Ok I think that's a bit much to ask, but here it is.
 
+```shell
 node index.js --fan-count=3 --animation Tracer -p "colors=red,black&fps=16,32,48"
+```
 
+#### Silly 3 fan animation example
 
-### Silly 3 fan animation example
-
+```shell
 node index.js --fan-count=3 --animation RedBlueCollision
-
+```
 
 
 If anything ever freezes, just control+c, if it still is frozen, hitting it again will force exit, should work fine the
